@@ -237,6 +237,10 @@ public class EncryptionFilter implements Filter {
         }
 
         try {
+            // https://github.com/spring-projects/spring-boot/issues/28874  添加这一行
+            if(!ServletRequestPathUtils.hasParsedRequestPath(request)){
+                ServletRequestPathUtils.parseAndCache(request);
+            }
             // 支持RestFul风格API
             // 采用Spring MVC内置的匹配方式将当前请求匹配到对应的Controller Method上，获取注解进行匹配是否要加解密
             HandlerExecutionChain handler = getHandler(request);
